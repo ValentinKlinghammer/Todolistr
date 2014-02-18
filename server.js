@@ -16,43 +16,48 @@ var Task = mongoose.model('Task', {
     text : String
   });
 
-app.listen(8080);
-console.log("App listening on port 8080");
+// --- API Routes -------------------------------------------------------------
 
-// --- Routes -----------------------------------------------------------------
+// GET all tasks
+app.get('/api/tasks', function(req, res) {
+  Task.find(function(err, tasks) {
+    if (err) { res.send(err); }
+    res.json(tasks);
+  });
+});
 
-  // GET all tasks
-  app.get('/api/tasks', function(req, res) {
+// POST new task
+app.post('/api/tasks', function(req, res) {
+  Task.create({
+    text : req.body.text,
+    done : false
+  }, function(err, todo) {
+    if (err) { res.send(err); }
     Task.find(function(err, tasks) {
       if (err) { res.send(err); }
       res.json(tasks);
     });
   });
 
-  // POST new task
-  app.post('/api/tasks', function(req, res) {
-    Task.create({
-      text : req.body.text,
-      done : false
-    }, function(err, todo) {
-      if (err) { res.send(err); }
-      Task.find(function(err, tasks) {
-        if (err) { res.send(err); }
-        res.json(tasks);
-      });
-    });
+});
 
-  });
-
-  // DELETE task
-  app.delete('/api/tasks/:id', function(req, res) {
-    Task.remove({
-      _id : req.params.id
-    }, function(err, todo) {
-      if (err) { res.send(err); }
-      Task.find(function(err, tasks) {
-        if (err) { res.send(err) }
-        res.json(tasks);
-      });
+// DELETE task
+app.delete('/api/tasks/:id', function(req, res) {
+  Task.remove({
+    _id : req.params.id
+  }, function(err, todo) {
+    if (err) { res.send(err); }
+    Task.find(function(err, tasks) {
+      if (err) { res.send(err) }
+      res.json(tasks);
     });
   });
+});
+
+// --- Frontend routes --------------------------------------------------------
+app.get('*', function(req, res) {
+  res.sendfile('./public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+});
+
+app.listen(8080);
+console.log("App listening on port 8080");
