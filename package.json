@@ -1,9 +1,9 @@
  {
-  "name"         : "node-todo",
+  "name"         : "Todolistr",
   "version"      : "0.0.0",
-  "description"  : "Simple todo application.",
+  "description"  : "A simple express and angular todo list web app.",
   "main"         : "server.js",
-  "author"       : "Scotch",
+  "author"       : "Quelltextfabrik",
   "dependencies" : {
     "express"    : "~3.4.4",
     "mongoose"   : "~3.6.2"
